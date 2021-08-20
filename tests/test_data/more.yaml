@@ -1,0 +1,301 @@
+test:
+  test 0000000000:
+    test: |-
+      echo 'test 0000000000'
+  test 0000000001:
+    test: |-
+      echo 'test 0000000001'
+  test 0000000002:
+    test: |-
+      echo 'test 0000000002'
+  test 0000000003:
+    test: |-
+      echo 'test 0000000003'
+  test 0000000004:
+    test: |-
+      echo 'test 0000000004'
+  test 0000000005:
+    test: |-
+      echo 'test 0000000005'
+  test 0000000006:
+    test: |-
+      echo 'test 0000000006'
+  test 0000000007:
+    test: |-
+      echo 'test 0000000007'
+  test 0000000008:
+    test: |-
+      echo 'test 0000000008'
+  test 0000000009:
+    test: |-
+      echo 'test 0000000009'
+  test 0000000010:
+    test: |-
+      echo 'test 0000000010'
+  test 0000000011:
+    test: |-
+      echo 'test 0000000011'
+  test 0000000012:
+    test: |-
+      echo 'test 0000000012'
+  test 0000000013:
+    test: |-
+      echo 'test 0000000013'
+  test 0000000014:
+    test: |-
+      echo 'test 0000000014'
+  test 0000000015:
+    test: |-
+      echo 'test 0000000015'
+  test 0000000016:
+    test: |-
+      echo 'test 0000000016'
+  test 0000000017:
+    test: |-
+      echo 'test 0000000017'
+  test 0000000018:
+    test: |-
+      echo 'test 0000000018'
+  test 0000000019:
+    test: |-
+      echo 'test 0000000019'
+  test 0000000020:
+    test: |-
+      echo 'test 0000000020'
+  test 0000000021:
+    test: |-
+      echo 'test 0000000021'
+  test 0000000022:
+    test: |-
+      echo 'test 0000000022'
+  test 0000000023:
+    test: |-
+      echo 'test 0000000023'
+  test 0000000024:
+    test: |-
+      echo 'test 0000000024'
+  test 0000000025:
+    test: |-
+      echo 'test 0000000025'
+  test 0000000026:
+    test: |-
+      echo 'test 0000000026'
+  test 0000000027:
+    test: |-
+      echo 'test 0000000027'
+  test 0000000028:
+    test: |-
+      echo 'test 0000000028'
+  test 0000000029:
+    test: |-
+      echo 'test 0000000029'
+  test 0000000030:
+    test: |-
+      echo 'test 0000000030'
+  test 0000000031:
+    test: |-
+      echo 'test 0000000031'
+  test 0000000032:
+    test: |-
+      echo 'test 0000000032'
+  test 0000000033:
+    test: |-
+      echo 'test 0000000033'
+  test 0000000034:
+    test: |-
+      echo 'test 0000000034'
+  test 0000000035:
+    test: |-
+      echo 'test 0000000035'
+  test 0000000036:
+    test: |-
+      echo 'test 0000000036'
+  test 0000000037:
+    test: |-
+      echo 'test 0000000037'
+  test 0000000038:
+    test: |-
+      echo 'test 0000000038'
+  test 0000000039:
+    test: |-
+      echo 'test 0000000039'
+  test 0000000040:
+    test: |-
+      echo 'test 0000000040'
+  test 0000000041:
+    test: |-
+      echo 'test 0000000041'
+  test 0000000042:
+    test: |-
+      echo 'test 0000000042'
+  test 0000000043:
+    test: |-
+      echo 'test 0000000043'
+  test 0000000044:
+    test: |-
+      echo 'test 0000000044'
+  test 0000000045:
+    test: |-
+      echo 'test 0000000045'
+  test 0000000046:
+    test: |-
+      echo 'test 0000000046'
+  test 0000000047:
+    test: |-
+      echo 'test 0000000047'
+  test 0000000048:
+    test: |-
+      echo 'test 0000000048'
+  test 0000000049:
+    test: |-
+      echo 'test 0000000049'
+  test 0000000050:
+    test: |-
+      echo 'test 0000000050'
+  test 0000000051:
+    test: |-
+      echo 'test 0000000051'
+  test 0000000052:
+    test: |-
+      echo 'test 0000000052'
+  test 0000000053:
+    test: |-
+      echo 'test 0000000053'
+  test 0000000054:
+    test: |-
+      echo 'test 0000000054'
+  test 0000000055:
+    test: |-
+      echo 'test 0000000055'
+  test 0000000056:
+    test: |-
+      echo 'test 0000000056'
+  test 0000000057:
+    test: |-
+      echo 'test 0000000057'
+  test 0000000058:
+    test: |-
+      echo 'test 0000000058'
+  test 0000000059:
+    test: |-
+      echo 'test 0000000059'
+  test 0000000060:
+    test: |-
+      echo 'test 0000000060'
+  test 0000000061:
+    test: |-
+      echo 'test 0000000061'
+  test 0000000062:
+    test: |-
+      echo 'test 0000000062'
+  test 0000000063:
+    test: |-
+      echo 'test 0000000063'
+  test 0000000064:
+    test: |-
+      echo 'test 0000000064'
+  test 0000000065:
+    test: |-
+      echo 'test 0000000065'
+  test 0000000066:
+    test: |-
+      echo 'test 0000000066'
+  test 0000000067:
+    test: |-
+      echo 'test 0000000067'
+  test 0000000068:
+    test: |-
+      echo 'test 0000000068'
+  test 0000000069:
+    test: |-
+      echo 'test 0000000069'
+  test 0000000070:
+    test: |-
+      echo 'test 0000000070'
+  test 0000000071:
+    test: |-
+      echo 'test 0000000071'
+  test 0000000072:
+    test: |-
+      echo 'test 0000000072'
+  test 0000000073:
+    test: |-
+      echo 'test 0000000073'
+  test 0000000074:
+    test: |-
+      echo 'test 0000000074'
+  test 0000000075:
+    test: |-
+      echo 'test 0000000075'
+  test 0000000076:
+    test: |-
+      echo 'test 0000000076'
+  test 0000000077:
+    test: |-
+      echo 'test 0000000077'
+  test 0000000078:
+    test: |-
+      echo 'test 0000000078'
+  test 0000000079:
+    test: |-
+      echo 'test 0000000079'
+  test 0000000080:
+    test: |-
+      echo 'test 0000000080'
+  test 0000000081:
+    test: |-
+      echo 'test 0000000081'
+  test 0000000082:
+    test: |-
+      echo 'test 0000000082'
+  test 0000000083:
+    test: |-
+      echo 'test 0000000083'
+  test 0000000084:
+    test: |-
+      echo 'test 0000000084'
+  test 0000000085:
+    test: |-
+      echo 'test 0000000085'
+  test 0000000086:
+    test: |-
+      echo 'test 0000000086'
+  test 0000000087:
+    test: |-
+      echo 'test 0000000087'
+  test 0000000088:
+    test: |-
+      echo 'test 0000000088'
+  test 0000000089:
+    test: |-
+      echo 'test 0000000089'
+  test 0000000090:
+    test: |-
+      echo 'test 0000000090'
+  test 0000000091:
+    test: |-
+      echo 'test 0000000091'
+  test 0000000092:
+    test: |-
+      echo 'test 0000000092'
+  test 0000000093:
+    test: |-
+      echo 'test 0000000093'
+  test 0000000094:
+    test: |-
+      echo 'test 0000000094'
+  test 0000000095:
+    test: |-
+      echo 'test 0000000095'
+  test 0000000096:
+    test: |-
+      echo 'test 0000000096'
+  test 0000000097:
+    test: |-
+      echo 'test 0000000097'
+  test 0000000098:
+    test: |-
+      echo 'test 0000000098'
+  test 0000000099:
+    test: |-
+      echo 'test 0000000099'

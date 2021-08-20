@@ -1,0 +1,9 @@
+test:
+  breaks:
+    test: |-
+      echo 'im now going to break :D'
+      exit 1
+  another:
+    test: |-
+      echo 'im now going to again :D'
+      exit 1

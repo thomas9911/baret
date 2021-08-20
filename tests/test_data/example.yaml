@@ -1,0 +1,16 @@
+---
+setup:
+  before_all: ""
+  after_all: ""
+test:
+  just echo:
+    before: ""
+    after: ""
+    test: "echo 'test'"
+    timeout: 5000
+    setup_timeout: 5000
+    command: sh -c
+global:
+  timeout: 5000
+  setup_timeout: 5000
+  command: sh -c

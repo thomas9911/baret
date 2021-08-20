@@ -1,0 +1,5 @@
+setup:
+  before_all: "echo 'wauw'"
+test:
+  hallo: 
+    test: "echo 'hi'"

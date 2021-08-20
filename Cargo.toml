@@ -1,0 +1,27 @@
+[package]
+name = "baret"
+version = "0.1.0"
+authors = ["Thomas <thomastimmer11@hotmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "baret_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "baret"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1.10.0", features = ["full"] }
+tokio-stream = "0.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.8"
+structopt = { version = "0.3", default-features = false }
+indicatif = "0.16"
+shlex = "1"
+derive_more = "*"
+
+[dev-dependencies]
+assert_cmd = "2.0"
