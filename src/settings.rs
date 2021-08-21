@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use derive_more::Deref;
 use serde::{Deserialize, Serialize};
 
@@ -37,6 +39,16 @@ impl<'a, 'b> SettingsStack<'a, 'b> {
         self.root.command()
     }
 
+    pub fn clear_env(&self) -> bool {
+        for layer in self.layer {
+            if let Some(clear_env) = layer.clear_env {
+                return clear_env;
+            }
+        }
+
+        self.root.clear_env()
+    }
+
     pub fn command_with_args(&self) -> (String, shlex::Shlex) {
         let (program, program_args) = {
             let mut program_args = shlex::Shlex::new(self.command());
@@ -53,11 +65,23 @@ impl<'a, 'b> SettingsStack<'a, 'b> {
         (program, program_args)
     }
 
+    pub fn env(&'a self) -> Box<dyn Iterator<Item = (&String, &String)> + 'a> {
+        let mut iter: Box<dyn Iterator<Item = (&String, &String)>> =
+            Box::new(self.root.env().into_iter());
+        for layer in self.layer {
+            iter = Box::new(iter.chain(layer.env()))
+        }
+
+        iter
+    }
+
     pub fn to_settings(&self) -> Settings {
         Settings {
             timeout: Some(self.timeout()),
             setup_timeout: Some(self.setup_timeout()),
             command: Some(self.command().to_string()),
+            clear_env: Some(self.clear_env()),
+            env: self.env().map(|(k, v)| (k.clone(), v.clone())).collect(),
         }
     }
 }
@@ -70,6 +94,11 @@ pub struct Settings {
     setup_timeout: Option<u32>,
     /// command to execute the tests with, default "sh -c"
     command: Option<String>,
+    /// clear the enviroment variables before executing the command, default false
+    clear_env: Option<bool>,
+    /// Add env
+    #[serde(default)]
+    env: HashMap<String, String>,
 }
 
 impl Settings {
@@ -104,11 +133,25 @@ impl Settings {
         "sh -c"
     }
 
+    pub fn clear_env(&self) -> bool {
+        if let Some(clear_env) = self.clear_env {
+            return clear_env;
+        }
+
+        false
+    }
+
+    pub fn env(&self) -> &HashMap<String, String> {
+        &self.env
+    }
+
     pub fn return_defaults(&self) -> Settings {
         Settings {
             timeout: Some(self.timeout()),
             setup_timeout: Some(self.setup_timeout()),
             command: Some(self.command().to_string()),
+            clear_env: Some(self.clear_env()),
+            env: HashMap::default(),
         }
     }
 }

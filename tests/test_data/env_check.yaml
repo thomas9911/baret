@@ -1,0 +1,43 @@
+test:
+  testing local is set:
+    test: |
+      if [[ -z "${TESTING_LOCAL}" ]]; then
+        echo "TESTING_LOCAL not set"
+        env
+        exit 1
+      fi
+
+      if [[ "${TESTING_LOCAL}" != "yes" ]]; then
+        echo "TESTING_LOCAL is not yes"
+        exit 1
+      fi
+    env:
+      TESTING_LOCAL: yes
+  testing global is set:
+    test: |
+      if [[ -z "${TESTING_GLOBAL}" ]]; then
+        echo "TESTING_GLOBAL not set"
+        env
+        exit 1
+      fi
+
+      if [[ "${TESTING_GLOBAL}" != "checked" ]]; then
+        echo "TESTING_LOCAL is not checked"
+        exit 1
+      fi
+    env:
+      TESTING_LOCAL: yes
+  testing from test is not set:
+    test: |
+      if [[ -n "${TESTING_FROM_TEST}" ]]; then
+        echo "TESTING_FROM_TEST is set"
+        env
+        exit 1
+      fi
+    env:
+      TESTING_LOCAL: yes
+global:
+  command: bash -c
+  clear_env: true
+  env:
+    TESTING_GLOBAL: checked

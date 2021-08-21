@@ -1,0 +1,16 @@
+test:
+  fails:
+    test: |
+      import sys
+
+      print("failed")
+      sys.exit(1)
+  just works:
+    test: |
+      import sys
+
+      print("success")
+      sys.exit(0)
+
+global:
+  command: python -c

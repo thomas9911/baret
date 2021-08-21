@@ -10,8 +10,12 @@ test:
     timeout: 5000
     setup_timeout: 5000
     command: sh -c
+    clear_env: false
+    env: {}
 global:
   max_test_concurrency: 64
   timeout: 5000
   setup_timeout: 5000
   command: sh -c
+  clear_env: false
+  env: {}

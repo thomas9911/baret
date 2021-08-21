@@ -1,5 +1,6 @@
 use std::process::Output;
 
+use tokio::io;
 use tokio::process::Command;
 
 use crate::error::Result;
@@ -7,6 +8,30 @@ use crate::Error;
 
 use crate::Data;
 use crate::SettingsStack;
+
+struct CommandBuilder<'a> {
+    function: &'a str,
+}
+
+impl<'a> CommandBuilder<'a> {
+    fn new(function: &'a str) -> CommandBuilder<'a> {
+        CommandBuilder { function }
+    }
+
+    async fn run(self, settings: &SettingsStack<'_, '_>) -> io::Result<Output> {
+        let (program, program_args) = settings.command_with_args();
+        let mut command = Command::new(program);
+
+        if settings.clear_env() {
+            command.env_clear();
+        }
+
+        command.envs(settings.env());
+        command.args(program_args);
+        command.arg(self.function);
+        command.output().await
+    }
+}
 
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -52,13 +77,10 @@ pub async fn post_setup(data: &Data) -> Option<Result> {
 }
 
 pub async fn run<'a, 'b>(command: &str, settings: &SettingsStack<'a, 'b>) -> Result {
-    let (program, program_args) = settings.command_with_args();
-
-    let result = Command::new(program)
-        .args(program_args)
-        .arg(command)
-        .output()
-        .await;
+    // let result = Command::new(program)
+    //     .args(program_args)
+    //     .arg(command)
+    let result = CommandBuilder::new(command).run(settings).await;
 
     match result {
         Ok(Output { status, .. }) if status.success() => Ok(()),

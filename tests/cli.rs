@@ -135,3 +135,53 @@ fn verify_error() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+#[test]
+fn run_env_check() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("-c")
+        .env("TESTING_FROM_TEST", "enabled")
+        .arg("tests/test_data/env_check.yaml");
+    cmd.assert().success();
+
+    Ok(())
+}
+
+#[test]
+fn verify_env_check() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("--verify")
+        .arg("-c")
+        .env("TESTING_FROM_TEST", "enabled")
+        .arg("tests/test_data/env_check.yaml");
+    cmd.assert().success();
+
+    Ok(())
+}
+
+#[test]
+fn run_python_command() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("-c").arg("tests/test_data/python_command.yaml");
+    let assertion = cmd.assert().failure();
+
+    assertion
+        .stderr(predicate::str::contains("Failed test: 'fails'"))
+        .stderr(predicate::str::contains("Failed test: 'success'").not());
+    Ok(())
+}
+
+#[test]
+fn verify_python_command() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("--verify")
+        .arg("-c")
+        .arg("tests/test_data/python_command.yaml");
+    cmd.assert().success();
+
+    Ok(())
+}
