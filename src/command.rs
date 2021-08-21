@@ -1,21 +1,12 @@
 use std::process::Output;
 
-use tokio::io;
 use tokio::process::Command;
 
-use derive_more::From;
+use crate::error::Result;
+use crate::Error;
 
 use crate::Data;
 use crate::SettingsStack;
-
-// type Result = io::Result<Output>;
-type Result = std::result::Result<(), Error>;
-
-#[derive(Debug, From)]
-pub enum Error {
-    IO(io::Error),
-    ExitCode(Output),
-}
 
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

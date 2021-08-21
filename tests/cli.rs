@@ -1,4 +1,5 @@
 use assert_cmd::Command;
+use predicates::prelude::*;
 
 #[test]
 fn config_does_not_exist() -> Result<(), Box<dyn std::error::Error>> {
@@ -98,30 +99,27 @@ fn run_error() -> Result<(), Box<dyn std::error::Error>> {
 
     cmd.arg("-c").arg("tests/test_data/error.yaml");
     let assertion = cmd.assert().failure();
-    let output = assertion.get_output();
 
-    assert_eq!(output.status.code().unwrap(), 1);
-    assert_eq!(
-        String::from_utf8(output.stderr.clone()).unwrap(),
-        r#"Failed test: 'breaks'
+    assertion
+        .stderr(predicate::str::contains(
+            r#"Failed test: 'breaks'
 exit code: 1
 stdout:
 im now going to break :D
 
 stderr:
-
-
-Failed test: 'another'
+"#,
+        ))
+        .stderr(predicate::str::contains(
+            r#"Failed test: 'another'
 exit code: 1
 stdout:
 im now going to again :D
 
 stderr:
-
-
-Error: Some tests had errors
-"#
-    );
+"#,
+        ))
+        .stderr(predicate::str::contains("Error: Some tests had errors"));
 
     Ok(())
 }
