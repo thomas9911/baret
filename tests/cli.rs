@@ -102,8 +102,8 @@ fn run_error() -> Result<(), Box<dyn std::error::Error>> {
 
     assert_eq!(output.status.code().unwrap(), 1);
     assert_eq!(
-        output.stderr,
-        br#"Failed test: 'breaks'
+        String::from_utf8(output.stderr.clone()).unwrap(),
+        r#"Failed test: 'breaks'
 exit code: 1
 stdout:
 im now going to break :D
@@ -119,7 +119,7 @@ im now going to again :D
 stderr:
 
 
-Error: "Some tests had errors"
+Error: Some tests had errors
 "#
     );
 

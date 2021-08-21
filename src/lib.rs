@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::Arc;
 
+use derive_more::Deref;
+
 pub mod command;
 
 #[derive(Debug, PartialEq, Default, Clone, Serialize, Deserialize)]
@@ -10,7 +12,7 @@ pub struct Data {
     pub setup: Setup,
     pub test: HashMap<String, Test>,
     #[serde(default)]
-    pub global: Settings,
+    pub global: GlobalSettings,
 }
 
 impl Data {
@@ -21,7 +23,7 @@ impl Data {
         let mut base = Data::default();
         base.setup = Setup::dump_example();
         base.test = example_test;
-        base.global = Settings::default().return_defaults();
+        base.global = GlobalSettings::default().return_defaults();
 
         base
     }
@@ -66,7 +68,7 @@ impl Test {
         }
     }
 
-    pub async fn run(&self, global: &Settings) -> Result<(), command::Error> {
+    pub async fn run(&self, global: &GlobalSettings) -> Result<(), command::Error> {
         let stack = &[&self.settings];
         let settings = global.stack(stack);
 
@@ -77,7 +79,7 @@ impl Test {
         Ok(())
     }
 
-    pub async fn run_arc_settings(self, global: Arc<Settings>) -> Result<(), command::Error> {
+    pub async fn run_arc_settings(self, global: Arc<GlobalSettings>) -> Result<(), command::Error> {
         let stack = &[&self.settings];
         let settings = global.stack(stack);
 
@@ -227,6 +229,32 @@ impl Settings {
             timeout: Some(self.timeout()),
             setup_timeout: Some(self.setup_timeout()),
             command: Some(self.command().to_string()),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Clone, Default, Deref, Serialize, Deserialize)]
+pub struct GlobalSettings {
+    /// Amount of test that run at the same time. You can increase this to speed up the tests if your processor can handle it. Or lower it if you computer freezes while running the tests, default 64.
+    max_test_concurrency: Option<usize>,
+    #[deref]
+    #[serde(flatten)]
+    other_settings: Settings,
+}
+
+impl GlobalSettings {
+    pub fn max_test_concurrency(&self) -> usize {
+        if let Some(max_test_concurrency) = self.max_test_concurrency {
+            return max_test_concurrency;
+        }
+
+        64
+    }
+
+    pub fn return_defaults(&self) -> GlobalSettings {
+        GlobalSettings {
+            max_test_concurrency: Some(self.max_test_concurrency()),
+            other_settings: self.other_settings.return_defaults(),
         }
     }
 }

@@ -11,6 +11,7 @@ test:
     setup_timeout: 5000
     command: sh -c
 global:
+  max_test_concurrency: 64
   timeout: 5000
   setup_timeout: 5000
   command: sh -c
