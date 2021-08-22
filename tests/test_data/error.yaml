@@ -1,7 +1,7 @@
 test:
   breaks:
     test: |-
-      echo 'im now going to break :D'
+      echo "im now going to break :'("
       exit 1
   another:
     test: |-

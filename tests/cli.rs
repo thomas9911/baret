@@ -105,7 +105,7 @@ fn run_error() -> Result<(), Box<dyn std::error::Error>> {
             r#"Failed test: 'breaks'
 exit code: 1
 stdout:
-im now going to break :D
+im now going to break :'(
 
 stderr:
 "#,
