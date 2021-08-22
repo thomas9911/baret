@@ -96,6 +96,7 @@ dependencies = [
  "lazy_static",
  "libc",
  "terminal_size",
+ "unicode-width",
  "winapi",
 ]
 
@@ -279,6 +280,8 @@ dependencies = [
  "lazy_static",
  "number_prefix",
  "regex",
+ "unicode-segmentation",
+ "unicode-width",
 ]
 
 [[package]]

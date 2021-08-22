@@ -146,12 +146,18 @@ impl Settings {
     }
 
     pub fn return_defaults(&self) -> Settings {
+        let mut env = HashMap::new();
+        env.insert(String::from("MY_CUSTOM_VAR"), String::from("my_value"));
+        env.insert(
+            String::from("ANOTHER_CUSTOM_VAR"),
+            String::from("other_value"),
+        );
         Settings {
             timeout: Some(self.timeout()),
             setup_timeout: Some(self.setup_timeout()),
             command: Some(self.command().to_string()),
             clear_env: Some(self.clear_env()),
-            env: HashMap::default(),
+            env,
         }
     }
 }

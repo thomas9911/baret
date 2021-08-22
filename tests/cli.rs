@@ -119,7 +119,9 @@ im now going to again :D
 stderr:
 "#,
         ))
-        .stderr(predicate::str::contains("Error: Some tests had errors"));
+        .stderr(predicate::str::contains(
+            "Error: 2 tests had errors out of 2 tests",
+        ));
 
     Ok(())
 }

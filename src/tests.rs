@@ -8,10 +8,14 @@ use crate::{command, Error};
 pub type Tests = HashMap<String, Test>;
 
 #[derive(Debug, PartialEq, Clone, Default, Serialize, Deserialize)]
+/// struct for holding the actual test case
 pub struct Test {
-    before: Option<String>,
-    after: Option<String>,
-    test: String,
+    /// script to run before the test
+    pub before: Option<String>,
+    /// script to run after the test
+    pub after: Option<String>,
+    /// the actual test script
+    pub test: String,
 
     #[serde(default, flatten)]
     pub settings: Settings,
@@ -32,9 +36,10 @@ impl Test {
         let settings = global.stack(stack);
 
         self.run_before(&settings).await?;
-        self.run_test(&settings).await?;
+        let test_result = self.run_test(&settings).await;
         self.run_after(&settings).await?;
 
+        test_result?;
         Ok(())
     }
 

@@ -14,6 +14,10 @@ use indicatif::ProgressBar;
 use baret_lib::command;
 use baret_lib::Data;
 
+const PROGRESS_BAR_COLOR_TEMPLATE: &'static str =
+    "[{elapsed_precise}] {pos:.cyan.bold.bright}/{len:.white.bold.bright} {bar:.cyan/blue}";
+const PROGRESS_BAR_TEMPLATE: &'static str = "[{elapsed_precise}] {pos}/{len} {bar}";
+
 #[derive(Debug, StructOpt)]
 #[structopt(name = "baret", about = "Bash and Rust End-to-end Testing.")]
 struct Opt {
@@ -32,6 +36,10 @@ struct Opt {
     /// dont show the progress bar
     #[structopt(short, long)]
     quiet: bool,
+
+    /// enable colors in the progress bar
+    #[structopt(long)]
+    color: bool,
 }
 
 fn main() {
@@ -64,19 +72,7 @@ fn main() {
         return;
     }
 
-    let amount_of_tasks = data.test.len() as u64;
-    let pb = if opt.quiet {
-        indicatif::ProgressBar::hidden()
-    } else {
-        indicatif::ProgressBar::new(amount_of_tasks)
-    };
-    pb.set_style(
-        indicatif::ProgressStyle::default_bar()
-            .template("[{elapsed_precise}] {pos}/{len} [{bar:.cyan/blue}]")
-            .progress_chars("#>-"),
-    );
-    pb.set_draw_delta(amount_of_tasks / 100);
-
+    let pb = create_progression_bar(&opt, data.test.len() as u64);
     let runtime = Builder::new_multi_thread().enable_all().build().unwrap();
 
     match runtime.block_on(main_loop(data, pb)) {
@@ -86,6 +82,34 @@ fn main() {
             std::process::exit(1);
         }
     }
+}
+
+fn create_progression_bar(opt: &Opt, amount_of_tasks: u64) -> ProgressBar {
+    let pb = if opt.quiet {
+        indicatif::ProgressBar::hidden()
+    } else {
+        indicatif::ProgressBar::new(amount_of_tasks)
+    };
+    // pb.set_style(
+    //     indicatif::ProgressStyle::default_bar()
+    //         .template("[{elapsed_precise}] {pos}/{len} [{bar:.cyan/blue}]")
+    //         .progress_chars("#>-"),
+    // );
+    if opt.color {
+        pb.set_style(
+            indicatif::ProgressStyle::default_bar()
+                .template(PROGRESS_BAR_COLOR_TEMPLATE)
+                .progress_chars("█░░"),
+        );
+    } else {
+        pb.set_style(
+            indicatif::ProgressStyle::default_bar()
+                .template(PROGRESS_BAR_TEMPLATE)
+                .progress_chars("█░░"),
+        );
+    }
+    pb.set_draw_delta(amount_of_tasks / 100);
+    pb
 }
 
 async fn main_loop(data: Data, pb: ProgressBar) -> Result<(), Box<dyn std::error::Error>> {
@@ -102,7 +126,6 @@ async fn main_loop(data: Data, pb: ProgressBar) -> Result<(), Box<dyn std::error
             tokio::spawn(async move {
                 match test.run_arc_settings(global_settings).await {
                     Ok(()) => false,
-                    // Ok(()) => (),
                     Err(err) => {
                         eprintln!("Failed test: '{}'", test_name);
                         eprintln!("{}", err);
@@ -113,10 +136,15 @@ async fn main_loop(data: Data, pb: ProgressBar) -> Result<(), Box<dyn std::error
         })
         .buffer_unordered(global_settings.max_test_concurrency());
 
-    let mut had_error = false;
+    let mut successes = 0usize;
+    let mut errors = 0usize;
     while let Some(task) = tasks.next().await {
-        had_error |= task?;
-        pb.inc(1);
+        if task? {
+            errors += 1;
+        } else {
+            successes += 1;
+            pb.inc(1);
+        }
     }
     pb.finish();
 
@@ -124,9 +152,24 @@ async fn main_loop(data: Data, pb: ProgressBar) -> Result<(), Box<dyn std::error
         result?
     }
 
-    if had_error {
-        Err("Error: Some tests had errors".into())
+    if errors != 0 {
+        Err(format!(
+            "Error: {} {} had errors out of {} {}",
+            errors,
+            test_or_tests(errors),
+            successes + errors,
+            test_or_tests(successes + errors)
+        )
+        .into())
     } else {
         Ok(())
+    }
+}
+
+fn test_or_tests(amount: usize) -> &'static str {
+    if amount == 1 {
+        "test"
+    } else {
+        "tests"
     }
 }

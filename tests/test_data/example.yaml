@@ -11,11 +11,15 @@ test:
     setup_timeout: 5000
     command: sh -c
     clear_env: false
-    env: {}
+    env:
+      MY_CUSTOM_VAR: my_value
+      ANOTHER_CUSTOM_VAR: other_value
 global:
   max_test_concurrency: 64
   timeout: 5000
   setup_timeout: 5000
   command: sh -c
   clear_env: false
-  env: {}
+  env:
+    MY_CUSTOM_VAR: my_value
+    ANOTHER_CUSTOM_VAR: other_value

@@ -11,6 +11,7 @@ pub use settings::{GlobalSettings, Settings, SettingsStack};
 pub use tests::{Test, Tests};
 
 #[derive(Debug, PartialEq, Default, Clone, Serialize, Deserialize)]
+/// Struct for holding the input test data
 pub struct Data {
     #[serde(default)]
     pub setup: Setup,
@@ -34,6 +35,7 @@ impl Data {
 }
 
 #[derive(Debug, PartialEq, Clone, Default, Serialize, Deserialize)]
+/// setup config
 pub struct Setup {
     before_all: Option<String>,
     after_all: Option<String>,
