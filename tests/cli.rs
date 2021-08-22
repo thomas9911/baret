@@ -185,3 +185,34 @@ fn verify_python_command() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+#[test]
+fn run_meta() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("-c").arg("tests/test_data/meta.yaml");
+    let assertion = cmd.assert().failure();
+
+    // output of the cargo test
+    assertion.stderr(predicate::str::contains("test meta_failure ... FAILED"));
+    Ok(())
+}
+
+#[test]
+fn verify_meta() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("--verify")
+        .arg("-c")
+        .arg("tests/test_data/meta.yaml");
+    cmd.assert().success();
+
+    Ok(())
+}
+
+#[test]
+#[ignore]
+fn meta_failure() -> () {
+    // test that fails, but is used for the meta test
+    panic!()
+}

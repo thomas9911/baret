@@ -1,0 +1,6 @@
+# test to run cargo test inside cargo test
+test:
+  meta works:
+    test: "cargo test simple"
+  meta failure:
+    test: "cargo test meta_failure -- --exact --ignored --test"
