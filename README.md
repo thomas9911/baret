@@ -84,5 +84,5 @@ for more examples check the [test/test_data](tests/test_data) folder.
 
 ```sh
 # for now you can install with git
-cargo install --git https://github.com/thomas9911/baret
+cargo install --git https://github.com/thomas9911/baret --branch main
 ```
