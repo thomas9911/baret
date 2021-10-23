@@ -65,6 +65,16 @@ impl<'a, 'b> SettingsStack<'a, 'b> {
         (program, program_args)
     }
 
+    pub fn should_fail(&self) -> bool {
+        for layer in self.layer {
+            if let Some(should_fail) = layer.should_fail {
+                return should_fail;
+            }
+        }
+
+        self.root.should_fail()
+    }
+
     pub fn env(&'a self) -> Box<dyn Iterator<Item = (&String, &String)> + 'a> {
         let mut iter: Box<dyn Iterator<Item = (&String, &String)>> =
             Box::new(self.root.env().into_iter());
@@ -81,6 +91,7 @@ impl<'a, 'b> SettingsStack<'a, 'b> {
             setup_timeout: Some(self.setup_timeout()),
             command: Some(self.command().to_string()),
             clear_env: Some(self.clear_env()),
+            should_fail: Some(self.should_fail()),
             env: self.env().map(|(k, v)| (k.clone(), v.clone())).collect(),
         }
     }
@@ -96,6 +107,8 @@ pub struct Settings {
     command: Option<String>,
     /// clear the enviroment variables before executing the command, default false
     clear_env: Option<bool>,
+    /// mark that the test should fail
+    should_fail: Option<bool>,
     /// Add env
     #[serde(default)]
     env: HashMap<String, String>,
@@ -141,6 +154,14 @@ impl Settings {
         false
     }
 
+    pub fn should_fail(&self) -> bool {
+        if let Some(should_fail) = self.should_fail {
+            return should_fail;
+        }
+
+        false
+    }
+
     pub fn env(&self) -> &HashMap<String, String> {
         &self.env
     }
@@ -157,6 +178,7 @@ impl Settings {
             setup_timeout: Some(self.setup_timeout()),
             command: Some(self.command().to_string()),
             clear_env: Some(self.clear_env()),
+            should_fail: Some(self.should_fail()),
             env,
         }
     }

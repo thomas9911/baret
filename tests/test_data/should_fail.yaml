@@ -1,0 +1,4 @@
+test:
+  failing:
+    test: "exit 1"
+    should_fail: true

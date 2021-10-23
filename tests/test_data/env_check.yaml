@@ -37,7 +37,7 @@ test:
     env:
       TESTING_LOCAL: yes
 global:
-  command: bash -c
+  command: sh -c
   clear_env: true
   env:
     TESTING_GLOBAL: checked

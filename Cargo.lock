@@ -35,6 +35,7 @@ version = "0.1.0"
 dependencies = [
  "assert_cmd",
  "derive_more",
+ "evalexpr",
  "futures",
  "indicatif",
  "predicates",
@@ -148,6 +149,12 @@ name = "encode_unicode"
 version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a357d28ed41a50f9c765dbfe56cbc04a64e53e5fc58ba79fbc34c10ef3df831f"
+
+[[package]]
+name = "evalexpr"
+version = "6.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e3147686f6ddffd86c76f7a2cd2fcd6fb17e380c10fcf86c3992b3265de8d2a9"
 
 [[package]]
 name = "float-cmp"

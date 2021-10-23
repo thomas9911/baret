@@ -22,7 +22,8 @@ serde_yaml = "0.8"
 structopt = { version = "0.3", default-features = false }
 indicatif = {version = "0.16", features = ["improved_unicode"]}
 shlex = "1"
-derive_more = "*"
+derive_more = "0.99"
+evalexpr = "6.5"
 
 [dev-dependencies]
 assert_cmd = "2.0"

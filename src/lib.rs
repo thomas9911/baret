@@ -3,6 +3,7 @@ use std::collections::HashMap;
 
 pub mod command;
 pub mod error;
+pub mod expression;
 pub mod settings;
 pub mod tests;
 

@@ -213,6 +213,28 @@ fn verify_meta() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 #[test]
+fn run_should_fail() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("-c").arg("tests/test_data/should_fail.yaml");
+    cmd.assert().success();
+
+    Ok(())
+}
+
+#[test]
+fn verify_should_fail() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("--verify")
+        .arg("-c")
+        .arg("tests/test_data/should_fail.yaml");
+    cmd.assert().success();
+
+    Ok(())
+}
+
+#[test]
 #[ignore]
 fn meta_failure() -> () {
     // test that fails, but is used for the meta test

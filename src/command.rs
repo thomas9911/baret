@@ -83,8 +83,15 @@ pub async fn run<'a, 'b>(command: &str, settings: &SettingsStack<'a, 'b>) -> Res
     let result = CommandBuilder::new(command).run(settings).await;
 
     match result {
-        Ok(Output { status, .. }) if status.success() => Ok(()),
+        Ok(Output { status, .. }) if is_success(settings.should_fail(), status.success()) => Ok(()),
         Ok(error) => Err(Error::ExitCode(error)),
         Err(err) => Err(Error::IO(err)),
+    }
+}
+
+fn is_success(inverse_result: bool, success: bool) -> bool {
+    match (inverse_result, success) {
+        (false, success) => success,
+        (true, success) => !success,
     }
 }
