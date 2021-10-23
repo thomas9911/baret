@@ -37,6 +37,8 @@ impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Error::IO(error) => write!(f, "{}", error),
+            Error::PatternError(error) => write!(f, "{}", error),
+            Error::GlobError(error) => write!(f, "{}", error),
             Error::ExitCode(error) => {
                 writeln!(f, "{}", &error.status)?;
                 writeln!(

@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 use std::collections::HashMap;
+use std::fs::read_to_string;
 use std::sync::Arc;
 
 use crate::settings::{GlobalSettings, Settings, SettingsStack};
@@ -73,5 +75,66 @@ impl Test {
     async fn run_test<'a, 'b>(&'a self, settings: &SettingsStack<'a, 'b>) -> Result<(), Error> {
         command::run(&self.test, settings).await?;
         Ok(())
+    }
+}
+
+#[serde_as]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// struct for holding the actual test case
+pub struct Group {
+    /// script to run before the test
+    pub before: Option<String>,
+    /// script to run after the test
+    pub after: Option<String>,
+    /// the test script file regexes
+    #[serde_as(as = "serde_with::OneOrMany<serde_with::DisplayFromStr>")]
+    pub files: Vec<glob::Pattern>,
+
+    #[serde(default, flatten)]
+    pub settings: Settings,
+}
+
+impl PartialEq for Group {
+    fn eq(&self, other: &Self) -> bool {
+        (self.before == other.before)
+            && (self.after == other.after)
+            && (self.settings == other.settings)
+            && (self.files.len() == other.files.len())
+            && self
+                .files
+                .iter()
+                .zip(other.files.iter())
+                .all(|(a, b)| a.as_str() == b.as_str())
+    }
+}
+
+impl Group {
+    pub fn into_tests(self) -> Result<Tests, Error> {
+        let mut hashmap = HashMap::new();
+        for item in self.files()? {
+            let path = item?;
+
+            hashmap.insert(
+                path.to_string_lossy().to_string(),
+                Test {
+                    after: self.before.clone(),
+                    before: self.before.clone(),
+                    settings: self.settings.clone(),
+                    test: read_to_string(&path)?,
+                },
+            );
+        }
+
+        Ok(hashmap)
+    }
+
+    pub fn files(&self) -> Result<Box<dyn Iterator<Item = glob::GlobResult>>, Error> {
+        let mut iterator: Box<dyn Iterator<Item = _>> = Box::new(std::iter::Empty::default());
+        for file in self.files.clone() {
+            let paths = glob::glob(file.as_str())?;
+            iterator = Box::new(iterator.chain(paths));
+        }
+
+        Ok(iterator)
     }
 }

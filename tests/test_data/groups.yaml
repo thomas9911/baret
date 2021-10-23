@@ -1,0 +1,2 @@
+test:
+  files: "./tests/test_data/groups/*_test.sh"

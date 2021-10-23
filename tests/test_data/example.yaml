@@ -11,6 +11,7 @@ test:
     setup_timeout: 5000
     command: sh -c
     clear_env: false
+    should_fail: false
     env:
       MY_CUSTOM_VAR: my_value
       ANOTHER_CUSTOM_VAR: other_value
@@ -20,6 +21,7 @@ global:
   setup_timeout: 5000
   command: sh -c
   clear_env: false
+  should_fail: false
   env:
     MY_CUSTOM_VAR: my_value
     ANOTHER_CUSTOM_VAR: other_value

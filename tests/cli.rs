@@ -39,12 +39,7 @@ fn run_simple() -> Result<(), Box<dyn std::error::Error>> {
 
 #[test]
 fn verify_simple() -> Result<(), Box<dyn std::error::Error>> {
-    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
-
-    cmd.arg("--verify")
-        .arg("-c")
-        .arg("tests/test_data/simple.yaml");
-    cmd.assert().success();
+    verify("tests/test_data/simple.yaml")?;
 
     Ok(())
 }
@@ -61,12 +56,7 @@ fn run_example() -> Result<(), Box<dyn std::error::Error>> {
 
 #[test]
 fn verify_example() -> Result<(), Box<dyn std::error::Error>> {
-    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
-
-    cmd.arg("--verify")
-        .arg("-c")
-        .arg("tests/test_data/example.yaml");
-    cmd.assert().success();
+    verify("tests/test_data/example.yaml")?;
 
     Ok(())
 }
@@ -83,12 +73,7 @@ fn run_more() -> Result<(), Box<dyn std::error::Error>> {
 
 #[test]
 fn verify_more() -> Result<(), Box<dyn std::error::Error>> {
-    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
-
-    cmd.arg("--verify")
-        .arg("-c")
-        .arg("tests/test_data/more.yaml");
-    cmd.assert().success();
+    verify("tests/test_data/more.yaml")?;
 
     Ok(())
 }
@@ -128,12 +113,7 @@ stderr:
 
 #[test]
 fn verify_error() -> Result<(), Box<dyn std::error::Error>> {
-    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
-
-    cmd.arg("--verify")
-        .arg("-c")
-        .arg("tests/test_data/error.yaml");
-    cmd.assert().success();
+    verify("tests/test_data/error.yaml")?;
 
     Ok(())
 }
@@ -178,12 +158,7 @@ fn run_python_command() -> Result<(), Box<dyn std::error::Error>> {
 
 #[test]
 fn verify_python_command() -> Result<(), Box<dyn std::error::Error>> {
-    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
-
-    cmd.arg("--verify")
-        .arg("-c")
-        .arg("tests/test_data/python_command.yaml");
-    cmd.assert().success();
+    verify("tests/test_data/python_command.yaml")?;
 
     Ok(())
 }
@@ -202,12 +177,7 @@ fn run_meta() -> Result<(), Box<dyn std::error::Error>> {
 
 #[test]
 fn verify_meta() -> Result<(), Box<dyn std::error::Error>> {
-    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
-
-    cmd.arg("--verify")
-        .arg("-c")
-        .arg("tests/test_data/meta.yaml");
-    cmd.assert().success();
+    verify("tests/test_data/meta.yaml")?;
 
     Ok(())
 }
@@ -224,12 +194,41 @@ fn run_should_fail() -> Result<(), Box<dyn std::error::Error>> {
 
 #[test]
 fn verify_should_fail() -> Result<(), Box<dyn std::error::Error>> {
+    verify("tests/test_data/should_fail.yaml")?;
+
+    Ok(())
+}
+
+#[test]
+fn run_groups() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
 
-    cmd.arg("--verify")
-        .arg("-c")
-        .arg("tests/test_data/should_fail.yaml");
+    cmd.arg("-c").arg("tests/test_data/groups.yaml");
     cmd.assert().success();
+
+    Ok(())
+}
+
+#[test]
+fn verify_groups() -> Result<(), Box<dyn std::error::Error>> {
+    verify("tests/test_data/groups.yaml")?;
+
+    Ok(())
+}
+
+#[test]
+fn run_groups_many() -> Result<(), Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("-c").arg("tests/test_data/groups_many.yaml");
+    cmd.assert().success();
+
+    Ok(())
+}
+
+#[test]
+fn verify_groups_many() -> Result<(), Box<dyn std::error::Error>> {
+    verify("tests/test_data/groups_many.yaml")?;
 
     Ok(())
 }
@@ -239,4 +238,13 @@ fn verify_should_fail() -> Result<(), Box<dyn std::error::Error>> {
 fn meta_failure() -> () {
     // test that fails, but is used for the meta test
     panic!()
+}
+
+fn verify(file: &str) -> Result<Command, Box<dyn std::error::Error>> {
+    let mut cmd = Command::cargo_bin(assert_cmd::crate_name!())?;
+
+    cmd.arg("--verify").arg("-c").arg(file);
+    cmd.assert().success();
+
+    Ok(cmd)
 }

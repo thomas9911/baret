@@ -12,7 +12,7 @@ use tokio::runtime::Builder;
 use indicatif::ProgressBar;
 
 use baret_lib::command;
-use baret_lib::Data;
+use baret_lib::{Data, TestsOrGroup};
 
 const PROGRESS_BAR_COLOR_TEMPLATE: &'static str =
     "[{elapsed_precise}] {pos:.cyan.bold.bright}/{len:.white.bold.bright} {bar:.cyan/blue}";
@@ -119,7 +119,11 @@ async fn main_loop(data: Data, pb: ProgressBar) -> Result<(), Box<dyn std::error
 
     let global_settings = Arc::new(data.global.clone());
 
-    let tests = data.test.clone();
+    let tests = match data.test.clone() {
+        TestsOrGroup::Tests(tests) => tests,
+        TestsOrGroup::Group(group) => group.into_tests()?,
+    };
+
     let mut tasks = stream::iter(tests)
         .map(|(test_name, test)| {
             let global_settings = global_settings.clone();

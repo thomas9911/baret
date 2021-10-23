@@ -9,14 +9,14 @@ pub mod tests;
 
 pub use error::Error;
 pub use settings::{GlobalSettings, Settings, SettingsStack};
-pub use tests::{Test, Tests};
+pub use tests::{Group, Test, Tests};
 
 #[derive(Debug, PartialEq, Default, Clone, Serialize, Deserialize)]
 /// Struct for holding the input test data
 pub struct Data {
     #[serde(default)]
     pub setup: Setup,
-    pub test: Tests,
+    pub test: TestsOrGroup,
     #[serde(default)]
     pub global: GlobalSettings,
 }
@@ -28,10 +28,34 @@ impl Data {
 
         let mut base = Data::default();
         base.setup = Setup::dump_example();
-        base.test = example_test;
+        base.test = TestsOrGroup::Tests(example_test);
         base.global = GlobalSettings::default().return_defaults();
 
         base
+    }
+}
+
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum TestsOrGroup {
+    Tests(Tests),
+    Group(Group),
+}
+
+impl TestsOrGroup {
+    pub fn len(&self) -> usize {
+        use TestsOrGroup::*;
+
+        match self {
+            Tests(x) => x.len(),
+            Group(x) => x.files().unwrap().collect::<Vec<_>>().len(),
+        }
+    }
+}
+
+impl Default for TestsOrGroup {
+    fn default() -> TestsOrGroup {
+        TestsOrGroup::Tests(Default::default())
     }
 }
 
